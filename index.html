@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREE FIRE - MINI BATTLE ROYALE</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sound Synth & Audio Toggle Button in top-left -->
+    <button id="sound-btn" class="icon-btn float-btn" title="Toggle Sound">
+        <i class="fas fa-volume-up"></i>
+    </button>
+    <!-- 1. LOBBY SCREEN -->
+    <div id="lobby-screen" class="screen active">
+        <!-- Parallax/Video Background Visuals -->
+        <div class="bg-particles"></div>
+        <div class="lobby-overlay"></div>
+        <!-- Top Header Navigation Bar -->
+        <header class="lobby-header">
+            <div class="header-left">
+                <div class="logo">
+                    <span class="logo-ff">FREE FIRE</span>
+                    <span class="logo-mini">MINI</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="currency-panel">
+                    <div class="currency gold">
+                        <i class="fas fa-coins text-gold"></i>
+                        <span id="gold-amount">24,500</span>
+                    </div>
+                    <div class="currency diamond">
+                        <i class="fas fa-gem text-cyan"></i>
+                        <span id="diamond-amount">840</span>
+                    </div>
+                </div>
+                <div class="profile-card">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=survivor" alt="Avatar" class="avatar">
+                    <div class="profile-info">
+                        <span class="profile-name">SURVIVOR_X</span>
+                        <div class="profile-lvl">
+                            <span class="lvl-badge">LV.42</span>
+                            <div class="lvl-progress-bar"><div class="lvl-progress" style="width: 72%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Lobby Content Grid -->
+        <div class="lobby-content">
+            <!-- Left Side: Character Selector -->
+            <section class="left-panel">
+                <h2 class="panel-title"><i class="fas fa-user-shield"></i> SELECT CHARACTER</h2>
+                <div class="character-list">
+                    <!-- Alok -->
+                    <div class="char-card active" data-char="alok">
+                        <div class="char-card-glow"></div>
+                        <div class="char-icon"><i class="fas fa-music"></i></div>
+                        <div class="char-meta">
+                            <span class="char-name">DJ ALOK</span>
+                            <span class="char-ability">Drop the Beat (Speed + Heal)</span>
+                        </div>
+                    </div>
+                    <!-- Kelly -->
+                    <div class="char-card" data-char="kelly">
+                        <div class="char-card-glow"></div>
+                        <div class="char-icon"><i class="fas fa-running"></i></div>
+                        <div class="char-meta">
+                            <span class="char-name">KELLY</span>
+                            <span class="char-ability">Dash (Sprint Speed Boost)</span>
+                        </div>
+                    </div>
+                    <!-- Hayato -->
+                    <div class="char-card" data-char="hayato">
+                        <div class="char-card-glow"></div>
+                        <div class="char-icon"><i class="fas fa-shield-halved"></i></div>
+                        <div class="char-meta">
+                            <span class="char-name">HAYATO</span>
+                            <span class="char-ability">Bushido (Armor Pen. on low HP)</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Selected Character Stats Display -->
+                <div class="stat-panel">
+                    <h3 class="stat-title">CHARACTER ABILITY</h3>
+                    <div class="ability-desc" id="char-ability-desc">
+                        Creates a 5m aura that increases movement speed by 15% and restores 5 HP/sec for 5s. (Cooldown: 45s)
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Movement Speed</span>
+                        <div class="stat-bar"><div class="stat-fill" id="stat-speed" style="width: 80%;"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Health Regen</span>
+                        <div class="stat-bar"><div class="stat-fill" id="stat-regen" style="width: 90%;"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Damage Buff</span>
+                        <div class="stat-bar"><div class="stat-fill" id="stat-damage" style="width: 50%;"></div></div>
+                    </div>
+                </div>
+            </section>
+            <!-- Center Side: Animated Character Hologram Preview -->
+            <section class="center-panel">
+                <div class="hologram-container">
+                    <div class="hologram-grid"></div>
+                    <div class="hologram-model" id="char-hologram">
+                        <!-- Holographic bot avatar or styled graphics -->
+                        <div class="holo-avatar-wrapper">
+                            <i class="fas fa-robot holo-icon animated-float"></i>
+                        </div>
+                    </div>
+                    <div class="hologram-pedestal"></div>
+                    <div class="hologram-scanner"></div>
+                </div>
+            </section>
+            <!-- Right Side: Settings & Game Modes -->
+            <section class="right-panel">
+                <!-- Game Settings -->
+                <div class="lobby-card settings-card">
+                    <h3 class="card-title"><i class="fas fa-cog"></i> SETTINGS</h3>
+                    <div class="settings-row">
+                        <label for="gfx-setting">Graphics:</label>
+                        <select id="gfx-setting">
+                            <option value="ultra">ULTRA (High FX)</option>
+                            <option value="standard" selected>STANDARD</option>
+                            <option value="smooth">SMOOTH (Low FX)</option>
+                        </select>
+                    </div>
+                    <div class="settings-row">
+                        <label for="bot-count">Bots Count:</label>
+                        <select id="bot-count">
+                            <option value="5">5 Bots (Easy)</option>
+                            <option value="10">10 Bots (Normal)</option>
+                            <option value="15" selected>15 Bots (Survival)</option>
+                            <option value="25">25 Bots (Mayhem!)</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Controls Guide -->
+                <div class="lobby-card controls-card">
+                    <h3 class="card-title"><i class="fas fa-gamepad"></i> CONTROLS</h3>
+                    <div class="control-key-grid">
+                        <div class="key-item"><span class="key">W,A,S,D</span> <span>Move Character</span></div>
+                        <div class="key-item"><span class="key">Mouse</span> <span>Aim Gun</span></div>
+                        <div class="key-item"><span class="key">Left Click</span> <span>Fire Weapon</span></div>
+                        <div class="key-item"><span class="key">R</span> <span>Reload Ammo</span></div>
+                        <div class="key-item"><span class="key">F</span> <span>Loot Item</span></div>
+                        <div class="key-item"><span class="key">1, 2, 3</span> <span>Switch Weapon</span></div>
+                        <div class="key-item"><span class="key">SPACE</span> <span>Active Ability</span></div>
+                    </div>
+                </div>
+                <!-- Match Selection & Start Game Button -->
+                <div class="start-action">
+                    <div class="match-mode-selector">
+                        <span class="mode-tag">BATTLE ROYALE</span>
+                        <span class="mode-map">BERMUDA - MINI</span>
+                    </div>
+                    <button id="start-btn" class="btn-primary-orange-glow">
+                        <span class="btn-text">START</span>
+                        <div class="btn-shimmer"></div>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- 2. MATCHMAKING OVERLAY -->
+    <div id="matchmaking-overlay" class="overlay-screen">
+        <div class="matchmaking-box">
+            <div class="spinner">
+                <div class="spinner-circle"></div>
+                <i class="fas fa-crosshairs target-crosshair"></i>
+            </div>
+            <h2 class="matchmaking-title">MATCHMAKING...</h2>
+            <div class="matchmaking-timer" id="matchmaking-timer">00:00</div>
+            <div class="matchmaking-progress">
+                <span class="progress-lbl">Connecting to Bermuda Server...</span>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="matchmaking-progress-fill" style="width: 0%;"></div>
+                </div>
+                <div class="players-found" id="players-found">Players joined: 1 / 50</div>
+            </div>
+            <button id="cancel-matchmaking" class="btn-secondary">CANCEL</button>
+        </div>
+    </div>
+    <!-- 3. PARACHUTE MAP DROP SCREEN -->
+    <div id="parachute-screen" class="screen">
+        <div class="parachute-header">
+            <h1>SELECT LANDING ZONE</h1>
+            <p>Click anywhere on the tactical map to drop from the airplane.</p>
+        </div>
+        <div class="map-drop-container">
+            <div class="island-map-texture">
+                <!-- Overlay markers -->
+                <div class="plane-flight-path">
+                    <div class="flight-line"></div>
+                    <div class="flight-plane" id="flight-plane">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                </div>
+                <div class="location-label loc-mill" style="top: 15%; left: 75%;">MILL</div>
+                <div class="location-label loc-peak" style="top: 45%; left: 45%;">PEAK</div>
+                <div class="location-label loc-clock" style="top: 65%; left: 25%;">CLOCK TOWER</div>
+                <div class="location-label loc-factory" style="top: 75%; left: 60%;">FACTORY</div>
+                <div class="location-label loc-hangar" style="top: 55%; left: 15%;">HANGAR</div>
+                <div class="location-label loc-observatory" style="top: 25%; left: 10%;">OBSERVATORY</div>
+                <div class="location-label loc-shipyard" style="top: 18%; left: 48%;">SHIPYARD</div>
+                <!-- Player selected marker -->
+                <div id="target-marker" class="target-marker hidden">
+                    <div class="radar-circle"></div>
+                    <i class="fas fa-location-crosshairs"></i>
+                </div>
+            </div>
+        </div>
+        <div class="parachute-countdown" id="parachute-timer">Auto drop in 10s...</div>
+    </div>
+    <!-- 4. GAME PLAY SCREEN -->
+    <div id="game-screen" class="screen">
+        <!-- The Game Render Canvas -->
+        <canvas id="game-canvas"></canvas>
+        <!-- Dynamic Game Alerts (Headshot, Double Kill, Zone Warnings) -->
+        <div id="game-announcement" class="announcement-overlay">
+            <div class="announcement-text animate-pop">BOOYAH!</div>
+        </div>
+        <!-- Safe Zone Announcement Alert -->
+        <div id="zone-warning-alert" class="zone-warning-overlay">
+            <div class="warning-title">WARNING!</div>
+            <div class="warning-sub">Safe Zone is shrinking in 15 seconds!</div>
+        </div>
+        <!-- HUD: User Interface Layer -->
+        <div class="game-hud">
+            <!-- Top Bar: Status Info -->
+            <div class="hud-top">
+                <div class="hud-stats-box">
+                    <div class="hud-stat alive">
+                        <span class="hud-stat-lbl">ALIVE</span>
+                        <span id="hud-alive-count" class="hud-stat-val">50</span>
+                    </div>
+                    <div class="hud-stat kills">
+                        <span class="hud-stat-lbl">KILLS</span>
+                        <span id="hud-kills-count" class="hud-stat-val">0</span>
+                    </div>
+                </div>
+                
+                <!-- Safe zone circle status & timer -->
+                <div class="hud-zone-timer">
+                    <i class="fas fa-shield-halved text-cyan pulse"></i>
+                    <div class="zone-timer-text">
+                        <span id="zone-status-lbl">NEXT SHRINKS IN</span>
+                        <span id="zone-timer-val" class="text-orange">01:30</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Top Right: Minimap Overlay -->
+            <div class="hud-minimap-container">
+                <canvas id="minimap-canvas" width="120" height="120"></canvas>
+            </div>
+            <!-- Center crosshair indicator -->
+            <div id="aim-crosshair"><i class="fas fa-crosshairs"></i></div>
+            <!-- Active Ability Button & Cooldown Overlay -->
+            <div class="hud-ability-container">
+                <button id="hud-ability-btn" class="ability-btn">
+                    <i class="fas fa-music" id="ability-icon"></i>
+                    <span id="ability-cooldown" class="cooldown-overlay hidden">30s</span>
+                </button>
+                <div class="ability-lbl">SPACE</div>
+            </div>
+            <!-- Bottom Left: Health & Status Bars -->
+            <div class="hud-bottom-left">
+                <!-- EP (Energy Points / Mushrooms) -->
+                <div class="hud-bar-container ep-container">
+                    <span class="bar-name">EP</span>
+                    <div class="hud-bar-bg">
+                        <div class="hud-bar-fill ep-fill" id="hud-ep-fill" style="width: 100%;"></div>
+                        <span class="bar-value" id="hud-ep-text">200 / 200</span>
+                    </div>
+                </div>
+                <!-- HP (Health Points) -->
+                <div class="hud-bar-container hp-container">
+                    <span class="bar-name">HP</span>
+                    <div class="hud-bar-bg">
+                        <div class="hud-bar-fill hp-fill" id="hud-hp-fill" style="width: 100%;"></div>
+                        <span class="bar-value" id="hud-hp-text">200 / 200</span>
+                    </div>
+                </div>
+                <!-- Shield / Vest Level & Helmet Level -->
+                <div class="hud-protection">
+                    <div class="protect-item" id="vest-status">
+                        <i class="fas fa-shirt text-muted"></i>
+                        <span>NO VEST</span>
+                    </div>
+                    <div class="protect-item" id="helmet-status">
+                        <i class="fas fa-hard-hat text-muted"></i>
+                        <span>NO HELMET</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Right: Weapon & Ammo Slots -->
+            <div class="hud-bottom-right">
+                <!-- Weapon Slot 1 -->
+                <div class="weapon-slot active" id="weapon-slot-1" data-slot="1">
+                    <div class="slot-number">1</div>
+                    <div class="weapon-info">
+                        <span class="weapon-name" id="w1-name">SCAR</span>
+                        <div class="ammo-info">
+                            <span id="w1-clip" class="ammo-clip">30</span>
+                            <span class="ammo-separator">/</span>
+                            <span id="w1-reserve" class="ammo-reserve">120</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-gun weapon-svg-icon" id="w1-icon"></i>
+                </div>
+                <!-- Weapon Slot 2 -->
+                <div class="weapon-slot" id="weapon-slot-2" data-slot="2">
+                    <div class="slot-number">2</div>
+                    <div class="weapon-info">
+                        <span class="weapon-name" id="w2-name">M1014</span>
+                        <div class="ammo-info">
+                            <span id="w2-clip" class="ammo-clip">0</span>
+                            <span class="ammo-separator">/</span>
+                            <span id="w2-reserve" class="ammo-reserve">0</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-shield weapon-svg-icon text-muted" id="w2-icon"></i>
+                </div>
+                <!-- Weapon Slot 3 (Melee/Fists) -->
+                <div class="weapon-slot" id="weapon-slot-3" data-slot="3">
+                    <div class="slot-number">3</div>
+                    <div class="weapon-info">
+                        <span class="weapon-name" id="w3-name">FISTS</span>
+                        <div class="ammo-info">
+                            <span class="ammo-clip">-</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-hand-fist weapon-svg-icon" id="w3-icon"></i>
+                </div>
+            </div>
+            <!-- Interacting Loot Tooltip Overlay -->
+            <div id="loot-prompt" class="loot-tooltip hidden">
+                <div class="loot-btn-key">F</div>
+                <div class="loot-detail">
+                    <span id="loot-item-name">AK47</span>
+                    <span id="loot-item-sub">Press to pick up</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 5. GAME OVER & BOOYAH SCREEN -->
+    <div id="game-over-screen" class="screen">
+        <div class="game-over-box">
+            <!-- Booyah vs Defeat Header -->
+            <div class="game-over-header" id="go-header">
+                <h1 id="go-title" class="animate-shine">BOOYAH!</h1>
+                <p id="go-subtitle">SURVIVOR #1</p>
+            </div>
+            <!-- Game Stats Card -->
+            <div class="game-over-stats">
+                <div class="stat-card">
+                    <i class="fas fa-skull text-orange"></i>
+                    <span class="val" id="go-kills">12</span>
+                    <span class="lbl">TOTAL KILLS</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-hourglass-half text-cyan"></i>
+                    <span class="val" id="go-time">04:32</span>
+                    <span class="lbl">TIME SURVIVED</span>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-trophy text-gold"></i>
+                    <span class="val" id="go-rank">#1</span>
+                    <span class="lbl">RANKING</span>
+                </div>
+            </div>
+            <!-- Rewards Panel -->
+            <div class="rewards-panel">
+                <div class="reward-item">
+                    <i class="fas fa-coins text-gold"></i>
+                    <span>+<span id="go-reward-gold">350</span> Gold</span>
+                </div>
+                <div class="reward-item">
+                    <i class="fas fa-star text-cyan"></i>
+                    <span>+<span id="go-reward-xp">1,200</span> XP</span>
+                </div>
+            </div>
+            <!-- Game Over Action Buttons -->
+            <div class="go-actions">
+                <button id="go-restart-btn" class="btn-primary-orange-glow">PLAY AGAIN</button>
+                <button id="go-lobby-btn" class="btn-secondary">LOBBY</button>
+            </div>
+        </div>
+    </div>
+    <!-- Script imports -->
+    <script src="audio.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
